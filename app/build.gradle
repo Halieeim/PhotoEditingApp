@@ -16,6 +16,12 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    externalNativeBuild{
+        cmake{
+            path "src/main/cpp/CMakeLists.txt"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -27,6 +33,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     buildToolsVersion '33.0.0'
+    ndkVersion '25.1.8937393'
 }
 
 dependencies {
