@@ -7,6 +7,7 @@ Java_com_example_photoeditingapp_MainActivity_blackAndWhite(JNIEnv *env, jclass 
                                                             jintArray pixels_, jint width,
                                                             jint height) {
     jint *pixels = (*env)->GetIntArrayElements(env, pixels_, NULL);
+
     char *colors = (char*) pixels;
     int pixelCount = width * height * 4;
     for (int i = 0; i < pixelCount; i+=4) {
@@ -79,38 +80,6 @@ Java_com_example_photoeditingapp_MainActivity_dilationFilter(JNIEnv *env, jclass
 }
 
 JNIEXPORT void JNICALL
-Java_com_example_photoeditingapp_MainActivity_HSBFilter(JNIEnv *env, jclass clazz, jintArray pixels_,
-                                                        jint width, jint height) {
-    // TODO: implement HSBFilter()
-    jint *pixels = (*env)->GetIntArrayElements(env, pixels_, NULL);
-    char *colors = (char*) pixels;
-    int pixelCount = width * height * 4, r,g,b, hue, saturation, brightness;
-    for (int i = 0; i < pixelCount; i+=4) {
-        r = pixels[i];
-        g = pixels[i+1];
-        b = pixels[i+2];
-        double R = r, G = g, B = b;
-        if (G >= R)
-            hue = acos((((R-G)+(R-B))/(sqrt((R-G)*(R-G) + (R-b) + (G-B))))/2);
-        else
-            hue = 360 - acos((((R-G)+(R-B))/(sqrt((R-G)*(R-G) + (R-b) + (G-B))))/2);
-
-        if (R <= G && R <= B)
-            saturation = 1 - (R/(R+G+B))*3;
-        else if (G <= R && G <= B)
-            saturation = 1 - (G/(R+G+B))*3;
-        else
-            saturation = 1 - (B/(R+G+B))*3;
-
-        brightness = (R+G+B)/3;
-        colors[i] = hue;
-        colors[i+1] = saturation;
-        colors[i+2] = brightness;
-    }
-    (*env)->ReleaseIntArrayElements(env,pixels_,pixels,0);
-}
-
-JNIEXPORT void JNICALL
 Java_com_example_photoeditingapp_MainActivity_contrastFilter(JNIEnv *env, jclass clazz,
                                                              jintArray pixels_, jint width,
                                                              jint height) {
@@ -164,29 +133,6 @@ Java_com_example_photoeditingapp_MainActivity_contrastFilter(JNIEnv *env, jclass
         colors[i] = r;
         colors[i+1] = g;
         colors[i+2] = b;
-    }
-    (*env)->ReleaseIntArrayElements(env,pixels_,pixels,0);
-}
-
-JNIEXPORT void JNICALL
-Java_com_example_photoeditingapp_MainActivity_noiseFilter(JNIEnv *env, jclass clazz,
-                                                           jintArray pixels_, jint width,
-                                                           jint height) {
-    // TODO: implement invertFilter()
-    jint *pixels = (*env)->GetIntArrayElements(env, pixels_, NULL);
-    char *colors = (char*) pixels;
-    int pixelCount = width * height * 4, r,g,b, hue, saturation, brightness;
-    for (int i = 0; i < pixelCount; i+=4) {
-        pixels[i] = (pixels[i] + pixels[i+1] + pixels[i+2])/3;
-        int randomNum1 = rand()%100;
-        if (randomNum1 < 5)
-        {
-            int randomNum2 = rand()%2;
-            if (randomNum2 == 0)
-                pixels[i] = 0;
-            else
-                pixels[i] = 255;
-        }
     }
     (*env)->ReleaseIntArrayElements(env,pixels_,pixels,0);
 }

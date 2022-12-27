@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -39,14 +40,16 @@
         android:visibility="gone">
 
         <LinearLayout
-            android:layout_width="100dp"
+            android:layout_width="50dp"
             android:layout_height="50dp">
             <Button
                 android:id="@+id/backButtoon"
-                android:layout_width="100dp"
+                style="@style/Widget.MaterialComponents.Button.Icon"
+                app:icon="@drawable/ic_back"
+                android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Back"/>
+                />
         </LinearLayout>
         <ImageView
             android:id="@+id/imageView"
@@ -57,7 +60,8 @@
         <HorizontalScrollView
             android:id="@+id/optionsBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="90dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -70,6 +74,23 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="Filters"/>
+
+                <Button
+                    android:id="@+id/rotateRight"
+                    style="@style/Widget.MaterialComponents.Button.Icon"
+                    app:icon="@drawable/ic_rotate_right"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/rotateLeft"
+                    style="@style/Widget.MaterialComponents.Button.Icon"
+                    app:icon="@drawable/ic_rotate_left"
+
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
             </LinearLayout>
 
         </HorizontalScrollView>
@@ -112,11 +133,11 @@
                     android:text="dilation" />
 
                 <Button
-                    android:id="@+id/HSB"
+                    android:id="@+id/gamma"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="HSB" />
+                    android:text="Gamma" />
 
                 <Button
                     android:id="@+id/contrast"
@@ -126,23 +147,23 @@
                     android:text="Contrast" />
 
                 <Button
-                    android:id="@+id/b5"
+                    android:id="@+id/invertFilter"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="5" />
+                    android:text="Invert" />
                 <Button
-                    android:id="@+id/b6"
+                    android:id="@+id/sepia"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="6" />
+                    android:text="Sepia" />
                 <Button
-                    android:id="@+id/b7"
+                    android:id="@+id/engrave"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="7" />
+                    android:text="Engrave" />
 
                 <Button
                     android:id="@+id/noise"
@@ -150,6 +171,20 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="Noise" />
+
+                <Button
+                    android:id="@+id/black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Black" />
+
+                <Button
+                    android:id="@+id/snow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Snow" />
             </LinearLayout>
         </HorizontalScrollView>
         <LinearLayout

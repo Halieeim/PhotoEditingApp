@@ -26,6 +26,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.material.bottomappbar.BottomAppBarTopEdgeTreatment;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -71,9 +73,7 @@ public class MainActivity extends AppCompatActivity {
     private static native void blackAndWhite(int[] pixels, int width, int height);
     private static native void pastelFilter(int[] pixels, int width, int height);
     private static native void dilationFilter(int[] pixels, int width, int height);
-    private static native void HSBFilter(int[] pixels, int width, int height);
     private static native void contrastFilter(int[] pixels, int width, int height);
-    private static native void noiseFilter(int[] pixels, int width, int height);
 
     @Override
     protected void onResume(){  // to check permissions every time the application being opened.
@@ -233,14 +233,59 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        final Button HSBFilterButton = findViewById(R.id.HSB);
-        HSBFilterButton.setOnClickListener(new View.OnClickListener() {
+        final Button gammaFilterButton = findViewById(R.id.gamma);
+        gammaFilterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new Thread(){
                     public void run(){
                         bitmap.getPixels(pixels,0,width,0,0,width, height);
-                        HSBFilter(pixels,width,height);
+                        Bitmap f = new Filters().applyGammaEffect(bitmap,1.8,1.8,1.8);
+                        f.getPixels(pixels,0,width,0,0,width, height);
+                        bitmap.setPixels(pixels,0,width,0,0,width,height);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                imageView.setImageBitmap(bitmap);
+                            }
+                        });
+                    }
+                }.start();
+                bitmap.setPixels(originalImg,0,width,0,0,width,height);
+            }
+        });
+
+        final Button sepiaToningButton = findViewById(R.id.sepia);
+        sepiaToningButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(){
+                    public void run(){
+                        bitmap.getPixels(pixels,0,width,0,0,width, height);
+                        Bitmap f = new Filters().applySepiaToningEffect(bitmap,10,1.8,1.8,5);
+                        f.getPixels(pixels,0,width,0,0,width, height);
+                        bitmap.setPixels(pixels,0,width,0,0,width,height);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                imageView.setImageBitmap(bitmap);
+                            }
+                        });
+                    }
+                }.start();
+                bitmap.setPixels(originalImg,0,width,0,0,width,height);
+            }
+        });
+
+        final Button engraveFilterButton = findViewById(R.id.engrave);
+        engraveFilterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(){
+                    public void run(){
+                        bitmap.getPixels(pixels,0,width,0,0,width, height);
+                        Bitmap f = new Filters().applyEngraveEffect(bitmap);
+                        f.getPixels(pixels,0,width,0,0,width, height);
                         bitmap.setPixels(pixels,0,width,0,0,width,height);
                         runOnUiThread(new Runnable() {
                             @Override
@@ -275,6 +320,29 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        final Button invertFilterButton = findViewById(R.id.invertFilter);
+        invertFilterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(){
+                    public void run(){
+                        bitmap.getPixels(pixels,0,width,0,0,width, height);
+                        Bitmap f = new Filters().applyInvertEffect(bitmap);
+                        f.getPixels(pixels,0,width,0,0,width, height);
+                        bitmap.setPixels(pixels,0,width,0,0,width,height);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                imageView.setImageBitmap(bitmap);
+                            }
+                        });
+                    }
+                }.start();
+                bitmap.setPixels(originalImg,0,width,0,0,width,height);
+
+            }
+        });
+
         final Button noiseFilterButton = findViewById(R.id.noise);
         noiseFilterButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -282,7 +350,8 @@ public class MainActivity extends AppCompatActivity {
                 new Thread(){
                     public void run(){
                         bitmap.getPixels(pixels,0,width,0,0,width, height);
-                        noiseFilter(pixels,width,height);
+                        Bitmap f = new Filters().applyFleaEffect(bitmap);
+                        f.getPixels(pixels,0,width,0,0,width,height);
                         bitmap.setPixels(pixels,0,width,0,0,width,height);
                         runOnUiThread(new Runnable() {
                             @Override
@@ -295,6 +364,51 @@ public class MainActivity extends AppCompatActivity {
                 bitmap.setPixels(originalImg,0,width,0,0,width,height);
             }
         });
+
+        final Button blackFilterButton = findViewById(R.id.black);
+        blackFilterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(){
+                    public void run(){
+                        bitmap.getPixels(pixels,0,width,0,0,width, height);
+                        Bitmap f = new Filters().applyBlackFilter(bitmap);
+                        f.getPixels(pixels,0,width,0,0,width,height);
+                        bitmap.setPixels(pixels,0,width,0,0,width,height);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                imageView.setImageBitmap(bitmap);
+                            }
+                        });
+                    }
+                }.start();
+                bitmap.setPixels(originalImg,0,width,0,0,width,height);
+            }
+        });
+
+        final Button snowFilterButton = findViewById(R.id.snow);
+        snowFilterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(){
+                    public void run(){
+                        bitmap.getPixels(pixels,0,width,0,0,width, height);
+                        Bitmap f = new Filters().applySnowEffect(bitmap);
+                        f.getPixels(pixels,0,width,0,0,width,height);
+                        bitmap.setPixels(pixels,0,width,0,0,width,height);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                imageView.setImageBitmap(bitmap);
+                            }
+                        });
+                    }
+                }.start();
+                bitmap.setPixels(originalImg,0,width,0,0,width,height);
+            }
+        });
+
         final Button originalImgButton = findViewById(R.id.originalImage);
         originalImgButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -312,6 +426,44 @@ public class MainActivity extends AppCompatActivity {
                 }.start();
             }
         });
+
+        final Button rotateRightButton = findViewById(R.id.rotateRight);
+        long[] angle = {0};
+        rotateRightButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(){
+                    public void run(){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                angle[0] += 90;
+                                imageView.setRotation(angle[0]);
+                            }
+                        });
+                    }
+                }.start();
+            }
+        });
+
+        final Button rotateLeftButton = findViewById(R.id.rotateLeft);
+        rotateLeftButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(){
+                    public void run(){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                angle[0] -= 90;
+                                imageView.setRotation(angle[0]);
+                            }
+                        });
+                    }
+                }.start();
+            }
+        });
+
         final Button saveImageButton = findViewById(R.id.saveImage);
         saveImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
