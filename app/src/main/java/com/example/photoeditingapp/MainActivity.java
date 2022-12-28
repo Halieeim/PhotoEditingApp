@@ -15,6 +15,9 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -428,7 +431,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         final Button rotateRightButton = findViewById(R.id.rotateRight);
-        long[] angle = {0};
         rotateRightButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -437,8 +439,12 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                angle[0] += 90;
-                                imageView.setRotation(angle[0]);
+                                Matrix matrix = new Matrix();
+                                matrix.postRotate(90);
+                                Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(), bitmap.getHeight(),matrix,true);
+                                bitmap.recycle();
+                                bitmap = rotatedBitmap;
+                                imageView.setImageBitmap(bitmap);
                             }
                         });
                     }
@@ -455,8 +461,12 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                angle[0] -= 90;
-                                imageView.setRotation(angle[0]);
+                                Matrix matrix = new Matrix();
+                                matrix.setRotate(-90);
+                                Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(), bitmap.getHeight(),matrix,true);
+                                bitmap.recycle();
+                                bitmap = rotatedBitmap;
+                                imageView.setImageBitmap(bitmap);
                             }
                         });
                     }
